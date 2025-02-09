@@ -1,102 +1,70 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
+
 export const Register = () => {
-    const [user, setuser] = useState({
+    const [user, setUser] = useState({
         username: "",
         email: "",
         phone: "",
         password: "",
-    })
+    });
 
     const navigate = useNavigate();
+    const { storeTokenInLS } = useAuth();
 
-    // using context api to store the token in local storage
-    const {storeTokenInLS}  = useAuth();
+    const handleInput = (e) => {
+        setUser({ ...user, [e.target.name]: e.target.value });
+    };
 
-    // handling the input values
-   const handleInput = (e) =>{
-    
-    let name = e.target.name;
-    let value = e.target.value;
-    console.log(user);
-
-    setuser({...user, [name]: value})
-
-    }
-    
-
-    // handling the form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-            const response = await fetch(`http://localhost:5000/api/auth/register`,{
+        try {
+            const response = await fetch(`http://localhost:5000/api/auth/register`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(user)
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(user),
             });
-            console.log("REsponse: ", response);
-            
 
-            // empty the form inputs (getting fresh form)
-            if(response.ok)
-            {
+            if (response.ok) {
                 const res_data = await response.json();
-                console.log("registration successful");
-                
-                // store the token in local storage
                 storeTokenInLS(res_data.token);
-
-            
-                setuser({ username: "", email: "", phone: "", password: "" });
+                setUser({ username: "", email: "", phone: "", password: "" });
                 navigate("/");
-                
+            } else {
+                console.log("Error in response");
             }
-            else {
-                console.log("Error in response")
-              }
-
-        } 
-        catch(error)
-        {
-            console.log("Register: ", error);
+        } catch (error) {
+            console.log("Register Error: ", error);
         }
-        
-        
+    };
 
-    }
+    return (
+        <section className="flex flex-col md:flex-row items-center justify-center  ">
+            <div className="w-full md:w-1/2 flex justify-center">
+                        <img src="/images/register-image.jpg" className="w-[90%] md:w-[80%]" alt="Contact" />
+                    </div>
 
-    return <>
-        <section>
-        <div className="main w-full min-h-96 flex justify-between text-black p-10">
-            <div className="register-image w-1/2 ">
-                <img src="/images/register-image.jpg" alt="Registration Image" />
+            <div className="w-full md:w-1/2 flex flex-col items-center p-6">
+                <h1 className="text-3xl font-bold text-blue-500 border-b-2 border-blue-400 p-2">Register</h1>
+                <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white shadow-lg rounded-lg p-6">
+                    <label htmlFor="username" className="font-medium">Username</label>
+                    <input value={user.username} onChange={handleInput} className="w-full p-2 mb-3 bg-gray-200 rounded rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" type="text" name="username" required autoComplete="off" />
+
+                    <label htmlFor="email" className="font-medium">Email</label>
+                    <input value={user.email} onChange={handleInput} className="w-full p-2 mb-3 bg-gray-200 rounded rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" type="email" name="email" required autoComplete="off" />
+
+                    <label htmlFor="phone" className="font-medium">Phone</label>
+                    <input value={user.phone} onChange={handleInput} className="w-full p-2 mb-3 bg-gray-200 rounded rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" type="number" name="phone" required autoComplete="off" />
+
+                    <label htmlFor="password" className="font-medium">Password</label>
+                    <input value={user.password} onChange={handleInput} className="w-full p-2 mb-4 bg-gray-200 rounded rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" type="password" name="password" required autoComplete="off" />
+
+                    <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold p-2 rounded transition duration-200">
+                        Register
+                    </button>
+                </form>
             </div>
-            <div className="register-content w-1/2 flex justify-around flex-col items-center ">
-            <h1 className="text-3xl font-bold text-blue-400 border-b-2 border-blue-400 p-2 ">Registration Page</h1>
-            <form className="register-form flex flex-col gap-2 w-1/3  " onSubmit={handleSubmit}>
-                <label htmlFor="username">Username</label>
-                <input value={user.username} onChange={handleInput} className=" bg-gray-200 p-2 text-black" type="text" name="username" id="username" required autoComplete="off"/>
-                
-                <label htmlFor="email">Email</label>
-                <input value={user.email} onChange={handleInput} className=" bg-gray-200 p-2 text-black " type="email" name="email" id="email" required autoComplete="off"/>
-                
-                <label htmlFor="phone">Phone</label>
-                <input value={user.phone} onChange={handleInput} className=" bg-gray-200 p-2 text-black" type="number" name="phone" id="phone" required autoComplete="off"/>
-                
-                <label htmlFor="password">Password</label>
-                <input value={user.password} onChange={handleInput} className=" bg-gray-200 p-2 text-black" type="password" name="password" id="password" required autoComplete="off"/>
-               
-                <input onSubmit={handleSubmit} className="sub text-black font-bold items-end bg-blue-400 p-2 mt-10 hover:bg-blue-500" type="submit" />
-             
-            </form>
-           
-            </div>
-            
-        </div>
-
         </section>
-    </>
-}
+    );
+};
