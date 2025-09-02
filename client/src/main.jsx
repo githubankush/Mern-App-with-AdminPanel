@@ -5,10 +5,10 @@ import './index.css'
 import { AuthProvider } from './store/auth.jsx'
 
 createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <AuthProvider>
+        <App />
+    </AuthProvider>
   
-  <AuthProvider>
-      <StrictMode>
-      <App />
-    </StrictMode>,
-  </AuthProvider>
+  </StrictMode>,
 )

@@ -36,19 +36,48 @@ const getUserById = async (req,res,next)=>{
 
 
 // get users from User Model
-const getAllUsers = async (req,res)=>{
-    
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find(
+      { isAdmin: false },
+      { password: 0 }            
+    );
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    return res.status(200).json(users);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// create new service 
+const createService = async (req,res,next)=>{
     try{
-        const users = await User.find({},{password:0});
-        if(!users || users.length === 0){
-            return res.status(404).json({message:"No users found"})
-        }
-        return res.status(200).json(users);
+            const {service, description,price, provider,image} = req.body;
+            if(!service || !description ){
+                return res.status(400).json({message:"Service and Description are required"});
+            }
+            const serviceExist = await Service.findOne({service});
+            if(serviceExist){
+                return res.status(400).json({message:"Service already exist"});
+            }
+            const newService = await Service.create({service, description, price, provider,image});
+
+            return res.status(201).json({message:"Service created successfully", service: newService});
     }
     catch(err){
+        console.log("Create Service: ", err)
         next(err);
     }
+    finally{
+        next();
+    }
+
 }
+
 
 // get contacts from Contact Model
 const getAllContacts = async (req,res)=>{
@@ -103,4 +132,4 @@ const deleteContactById = async (req,res,next)=>{
 }
 
 
-module.exports = {getAllUsers, getAllContacts, getAllServices,deleteUserById,deleteContactById,getUserById,updateUserById};
+module.exports = {getAllUsers, getAllContacts, getAllServices,createService,deleteUserById,deleteContactById,getUserById,updateUserById};

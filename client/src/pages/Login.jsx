@@ -1,93 +1,158 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/auth";
+import toast from "react-hot-toast";
+import { motion } from "framer-motion";
+import { Mail, Lock, LogIn } from "lucide-react";
 
 export const Login = () => {
-    const [User, setUser] = useState({
-        email: "",
-        password: ""
-    });
+  const { user, isloggedIn, admin, storeTokenInLS } = useAuth();
+  const [User, setUser] = useState({
+    email: "",
+    password: "",
+  });
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    // Using context API
-    const { storeTokenInLS, user } = useAuth();
+  useEffect(() => {
+    if (admin && isloggedIn) {
+      navigate("/admin/home");
+    }
+  }, [isloggedIn, admin, navigate]);
 
-    // Handling the input values
-    const handleInput = (e) => {
-        const { name, value } = e.target;
-        setUser({ ...User, [name]: value });
-    };
+  // Handle inputs
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setUser({ ...User, [name]: value });
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log("USER", user);
-        try {
-            const response = await fetch(`http://localhost:5000/api/auth/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(User)
-            });
-            if (response.ok) {
-                const res_data = await response.json();
-                storeTokenInLS(res_data.token);
-                alert('Login Successful');
-                setUser({ email: "", password: "" });
-                user?.isAdmin ? navigate("/admin/") : navigate("/");
-            } else {
-                alert('Invalid Credentials');
-            }
-        } catch (error) {
-            console.log("LOGIN: ", error);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(User),
+      });
+
+      if (response.ok) {
+        const res_data = await response.json();
+        storeTokenInLS(res_data.token);
+        toast.success("Login Successful 🎉");
+        setUser({ email: "", password: "" });
+        if (admin) {
+        navigate("/admin/");
+        } else {
+        navigate("/");
         }
-    };
 
-    return (
-        <div className="flex flex-col md:flex-row items-center justify-center p-2 md:p-6">
-            {/* Login Image */}
-            <div className="w-full md:w-1/2 flex justify-center">
-                        <img src="/images/login-image.jpg" className="w-[90%] md:w-[80%]" alt="Contact" />
-                    </div>
-            
-            {/* Login Form */}
-            <div className="w-full md:w-1/2 flex flex-col items-center p-2 md:p-10 bg-white">
-                <h1 className="text-3xl font-bold text-blue-500 border-b-2 border-blue-400  mb-4">Login</h1>
-                <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white shadow-lg rounded-lg p-6">
-    <label htmlFor="email" className="font-medium">Email</label>
-    <input 
-        value={User.email} 
-        onChange={handleInput} 
-        className="w-full p-2 mb-3 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" 
-        type="email" 
-        name="email" 
-        id="email" 
-        required 
-        autoComplete="off"
-    />
+      } else {
+        toast.error("Invalid Credentials ❌");
+      }
+    } catch (error) {
+      console.log("LOGIN ERROR: ", error);
+      toast.error("Something went wrong, try again!");
+    }
+  };
 
-    <label htmlFor="password" className="font-medium">Password</label>
-    <input 
-        value={User.password} 
-        onChange={handleInput} 
-        className="w-full p-2 mb-4 bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" 
-        type="password" 
-        name="password" 
-        id="password" 
-        required 
-        autoComplete="off"
-    />
-
-    <button 
-        type="submit" 
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold p-2 rounded transition duration-200"
-    >
-        Login
-    </button>
-</form>
-
-            </div>
+  return (
+    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center  bg-gradient-to-br from-blue-50 to-blue-100 p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="flex flex-col md:flex-row w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden"
+      >
+        {/* Left Side - Image */}
+        <div className="hidden md:flex w-1/2 bg-gradient-to-br from-blue-500 via-blue-300  items-center justify-center p-6">
+          <motion.img
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.6 }}
+            src="/images/login-image.jpg"
+            alt="Login Illustration"
+            className="rounded-xl shadow-lg max-h-[400px] object-cover"
+          />
         </div>
-    );
+
+        {/* Right Side - Login Form */}
+        <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">
+          <h1 className="text-3xl font-extrabold text-gray-800 text-center mb-6">
+            Welcome Back 👋
+          </h1>
+          <p className="text-gray-500 text-center mb-6">
+            Login to continue exploring
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email */}
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Email Address
+              </label>
+              <div className="flex items-center border rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-400 mt-1">
+                <Mail className="ml-3 text-gray-400" size={20} />
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  value={User.email}
+                  onChange={handleInput}
+                  placeholder="Enter your email"
+                  className="w-full p-3 bg-transparent focus:outline-none"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Password
+              </label>
+              <div className="flex items-center border rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-400 mt-1">
+                <Lock className="ml-3 text-gray-400" size={20} />
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  value={User.password}
+                  onChange={handleInput}
+                  placeholder="Enter your password"
+                  className="w-full p-3 bg-transparent focus:outline-none"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              type="submit"
+              className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg shadow-lg transition-all duration-300"
+            >
+              <LogIn size={20} />
+              Login
+            </motion.button>
+          </form>
+
+          <p className="text-center text-gray-500 mt-6">
+            Don’t have an account?{" "}
+            <a href="/register" className="text-indigo-600 font-semibold">
+              Register
+            </a>
+          </p>
+        </div>
+      </motion.div>
+    </div>
+  );
 };

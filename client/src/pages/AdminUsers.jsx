@@ -69,7 +69,6 @@ export const AdminUsers = () => {
                                         <th className="py-3 w-1/5">Username</th>
                                         <th className="py-3 w-1/5">Email</th>
                                         <th className="py-3 w-1/5">Phone</th>
-                                        <th className="py-3 w-1/5">Edit</th>
                                         <th className="py-3 w-1/5">Delete</th>
                                     </tr>
                                 </thead>
@@ -79,11 +78,7 @@ export const AdminUsers = () => {
                                             <td className="px-4 py-4">{user.username}</td>
                                             <td className="px-4 py-4">{user.email}</td>
                                             <td className="px-4 py-4">{user.phone}</td>
-                                            <td className="px-4 py-4">
-                                                <Link to={`/admin/users/${user._id}/edit`} className="text-blue-600 hover:underline">
-                                                    Edit
-                                                </Link>
-                                            </td>
+                                            
                                             <td className="px-4 py-4">
                                                 <button className="text-red-600 hover:underline" onClick={() => deleteUser(user._id)}>
                                                     Delete

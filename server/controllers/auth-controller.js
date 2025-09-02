@@ -14,26 +14,27 @@ const home = async (req, res) => {
 //Register
 const register = async (req, res) => {
     try {
-        const { username, email, phone , password, isAdmin } = req.body;
+        const { username, email, phone, password, isAdmin } = req.body;
         console.log(req.body);
-        const userExist = await userModel.findOne({ email});
-        if (userExist) {
-            res.status(400).json({message: "User already exist"});
-        }
-        
-       const userCreated =  await userModel.create({ username, email, phone , password, isAdmin });
 
-        res.status(201).json(
-            {
-                message: "Registration Successful",
-                token: await userCreated.generateToken(),
-                userId: userCreated._id.toString(),
-           });
+        const userExist = await userModel.findOne({ email });
+        if (userExist) {
+            return res.status(400).json({ message: "User already exists" }); // <-- add return
+        }
+
+        const userCreated = await userModel.create({ username, email, phone, password, isAdmin });
+
+        return res.status(201).json({
+            message: "Registration Successful",
+            token: await userCreated.generateToken(),
+            userId: userCreated._id.toString(),
+        });
     } catch (error) {
-        console.log("Error: ",error);
-        res.status(500).json({message: "Internal server error"});
+        console.log("Error: ", error);
+        return res.status(500).json({ message: "Internal server error" });
     }
-}
+};
+
 
 //Login
 const login = async (req, res) => {

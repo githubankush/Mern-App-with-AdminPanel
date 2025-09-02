@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, redirect, Route, Routes} from "react-router-dom";
 import { Home} from "./pages/Home";
 import { About } from "./pages/About";
 import { Contact } from "./pages/Contact";
@@ -13,7 +13,9 @@ import { AdminUsers } from "./pages/AdminUsers";
 import { AdminContacts } from "./pages/AdminContacts";
 import { AdminServices } from "./pages/AdminServices";
 import { AdminHome } from "./pages/AdminHome";
+import { Toaster } from "react-hot-toast";
 const App = ()=>{
+ 
   return <>
     <BrowserRouter>
     <Navbar/>
@@ -35,6 +37,7 @@ const App = ()=>{
           <Route path="services" element={<AdminServices/>}/>
         </Route>
       </Routes> 
+      <Toaster position="top-center" reverseOrder={false} />
     </BrowserRouter>
   </>
 }

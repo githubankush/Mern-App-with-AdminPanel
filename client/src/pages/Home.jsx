@@ -1,41 +1,66 @@
 import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export const Home = () => {
   return (
-    <>
-      <div className="container w-full  bg-white flex flex-col gap-10 md:flex-row justify-center items-center px-6 py-10 md:px-10 md:py-8">
-        
-        {/* Left Section */}
-        <div className="main w-full md:w-1/2 p-2 md:p-10 text-center md:text-left">
-          <p className="text-lg md:text-xl font-bold text-gray-700">
-            World's Best Tech Support Company
-          </p>
-          <h1 className="text-2xl md:text-5xl font-extrabold text-gray-900 mt-2">
-            Welcome to Ankush <span className="text-blue-500 text-lg md:text-4xl">24x7</span>
-          </h1>
-          <p className="mt-4 text-gray-600 leading-relaxed">
-            Are you ready to take your business to the next level with cutting-edge Tech Support? At Ankush 
-            <span className="text-blue-500"> 24x7</span>, we specialize in providing innovative IT services to meet your unique needs.
-          </p>
-          <div className="row mt-6 flex flex-col md:flex-row gap-3 md:gap-5">
-            <NavLink 
-              to="/contact" 
-              className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300 text-center"
-            >
-              Contact Now
-            </NavLink>
-            <button className="bg-gray-200 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-300 transition duration-300">
-              Learn More
-            </button>
-          </div>
-        </div>
-
-        {/* Right Section (Image) */}
-        <div className="main2 w-full md:w-1/2 flex justify-center mt-6 md:mt-0">
-          <img src="/images/home-image.png" alt="Tech Support" className="max-w-full h-auto rounded-lg " />
-        </div>
+    <section className="w-full min-h-[90vh] flex flex-col md:flex-row items-center justify-center px-2 md:px-12 lg:px-20 py-2 bg-gradient-to-r from-blue-50 via-white to-blue-100">
       
-      </div>
-    </>
+      {/* Left Section */}
+      <motion.div
+        className="w-full md:w-1/2 space-y-6 text-center md:text-left"
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <p className="text-lg md:text-xl font-semibold text-blue-600 tracking-wide uppercase">
+          World’s Best Tech Support Company
+        </p>
+
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+          Welcome to{" "}
+          <span className="bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent">
+            TechEase
+          </span>
+        </h1>
+
+        <p className="mt-4 text-gray-700 leading-relaxed text-base md:text-lg max-w-lg mx-auto md:mx-0">
+          Ready to take your business to the next level with cutting-edge tech
+          support? At{" "}
+          <span className="text-blue-500 font-semibold">TechEase</span>, we
+          specialize in providing innovative IT services tailored to your needs.
+        </p>
+
+        <div className="mt-6 flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+          <NavLink
+            to="/contact"
+            className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3 rounded-xl shadow-lg hover:scale-105 hover:shadow-2xl transition duration-300 text-lg font-medium"
+          >
+            Contact Now
+          </NavLink>
+          <NavLink
+            to="/about"
+            className="bg-gray-200 text-gray-800 px-8 py-3 rounded-xl hover:bg-gray-300 hover:scale-105 transition duration-300 text-lg font-medium"
+          >
+            Learn More
+          </NavLink>
+        </div>
+      </motion.div>
+
+      {/* Right Section (Image) */}
+      <motion.div
+        className="w-full md:w-1/2 flex justify-center mt-10 md:mt-0"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <motion.img
+          src="/images/home-image.png"
+          alt="Tech Support"
+          className="max-w-md md:max-w-lg lg:max-w-xl w-full h-auto rounded-2xl "
+          animate={{ y: [0, -15, 0] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+        />
+      </motion.div>
+    </section>
   );
 };
