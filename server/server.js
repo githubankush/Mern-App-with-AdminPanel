@@ -24,6 +24,10 @@ app.use("/api/form", contactRoute)
 app.use("/api/data", serviceRoute);
 app.use("/api/admin", adminRoute);  //admin route
 app.use(errorMiddleware);
+
+app.get("/", (req, res) => {
+    res.send("API is running....");
+});
 const Port = 5000;
 
 connectDB().then(()=>{
