@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../store/auth";
 
 export const AdminServices = () => {
+  const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
   const [services, setServices] = useState([]);
   const { authorizationToken } = useAuth();
   const [showForm, setShowForm] = useState(false);
@@ -15,11 +16,12 @@ export const AdminServices = () => {
 
   const getAllServicesData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/admin/services", {
+      const response = await fetch(`${API}/admin/services`, {
         method: "GET",
         headers: {
           Authorization: authorizationToken,
         },
+        credentials: "include",
       });
       const data = await response.json();
       console.log("Data from Admin Services: ", data);
@@ -36,12 +38,13 @@ export const AdminServices = () => {
   const addService = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/admin/createservice", {
+      const response = await fetch(`${API}/admin/createservice`, {
         method: "POST",
         headers: {
           Authorization: authorizationToken,
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(newService),
       });
       const data = await response.json();

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Mail, Lock, LogIn } from "lucide-react";
 
 export const Login = () => {
+  const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
   const { user, isloggedIn, admin, storeTokenInLS } = useAuth();
   const [User, setUser] = useState({
     email: "",
@@ -29,12 +30,13 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/api/auth/login`, {
+      const response = await fetch(`${API}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(User),
+        credentials: "include",
       });
 
       if (response.ok) {

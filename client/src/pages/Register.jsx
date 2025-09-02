@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { User, Mail, Phone, Lock } from "lucide-react";
 import {motion} from "framer-motion";
 export const Register = () => {
+  const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -26,10 +27,11 @@ export const Register = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/auth/register`, {
+      const response = await fetch(`${API}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
+        credentials: "include",
       });
 
       const res_data = await response.json();

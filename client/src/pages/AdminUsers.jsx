@@ -3,6 +3,7 @@ import { useAuth } from "../store/auth";
 import { Link } from "react-router-dom";
 
 export const AdminUsers = () => {
+    const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const { authorizationToken } = useAuth();
@@ -10,11 +11,12 @@ export const AdminUsers = () => {
     // Fetch users
     const getAllUsersData = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/admin/users", {
+            const response = await fetch(`${API}/admin/users`, {
                 method: "GET",
                 headers: {
                     Authorization: authorizationToken,
                 },
+                credentials: "include",
             });
             const data = await response.json();
             setUsers(data);
@@ -28,11 +30,12 @@ export const AdminUsers = () => {
     // Delete user
     const deleteUser = async (id) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/users/delete/${id}`, {
+            const response = await fetch(`${API}/admin/users/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: authorizationToken,
                 },
+                credentials: "include",
             });
             if (response.ok) {
                 alert("User deleted successfully");

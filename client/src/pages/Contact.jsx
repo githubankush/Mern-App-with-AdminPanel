@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export const Contact = () => {
+  const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
   const [contact, setContact] = useState({
     username: "",
     email: "",
@@ -34,12 +35,13 @@ export const Contact = () => {
     console.log("Contact User: ", contact);
 
     try {
-      const response = await fetch("http://localhost:5000/api/form/contact", {
+      const response = await fetch(`${API}/api/form/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(contact),
+        credentials: "include",
       });
 
       if (response.ok) {

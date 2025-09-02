@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../store/auth";
 
 export const AdminContacts = () => {
+  const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { authorizationToken } = useAuth();
@@ -9,11 +10,12 @@ export const AdminContacts = () => {
   // Fetch all contacts
   const getAllContactsData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/admin/contacts", {
+      const response = await fetch(`${API}/admin/contacts`, {
         method: "GET",
          headers: {
                     Authorization: authorizationToken
-        }
+        },
+        credentials: "include",
       });
 
       if (!response.ok) {

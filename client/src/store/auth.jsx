@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -21,11 +22,12 @@ export const AuthProvider = ({ children }) => {
   const userAuthentication = async (customToken) => {
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:5000/api/auth/user", {
+      const response = await fetch(`${API}/auth/user`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${customToken || token}`, // support fresh token
         },
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -47,7 +49,13 @@ export const AuthProvider = ({ children }) => {
 
   const getServiceData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/data/service");
+      const response = await fetch(`${API}/data/services`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         setService(data.msg);
