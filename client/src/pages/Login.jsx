@@ -36,7 +36,6 @@ export const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(User),
-        credentials: "include",
       });
 
       if (response.ok) {

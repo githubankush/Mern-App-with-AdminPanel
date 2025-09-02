@@ -15,7 +15,6 @@ export const AdminContacts = () => {
          headers: {
                     Authorization: authorizationToken
         },
-        credentials: "include",
       });
 
       if (!response.ok) {

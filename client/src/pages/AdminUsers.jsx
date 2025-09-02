@@ -16,7 +16,6 @@ export const AdminUsers = () => {
                 headers: {
                     Authorization: authorizationToken,
                 },
-                credentials: "include",
             });
             const data = await response.json();
             setUsers(data);
@@ -35,7 +34,6 @@ export const AdminUsers = () => {
                 headers: {
                     Authorization: authorizationToken,
                 },
-                credentials: "include",
             });
             if (response.ok) {
                 alert("User deleted successfully");

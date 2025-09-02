@@ -21,7 +21,6 @@ export const AdminServices = () => {
         headers: {
           Authorization: authorizationToken,
         },
-        credentials: "include",
       });
       const data = await response.json();
       console.log("Data from Admin Services: ", data);
@@ -44,7 +43,6 @@ export const AdminServices = () => {
           Authorization: authorizationToken,
           "Content-Type": "application/json",
         },
-        credentials: "include",
         body: JSON.stringify(newService),
       });
       const data = await response.json();
