@@ -27,7 +27,6 @@ export const AuthProvider = ({ children }) => {
         headers: {
           Authorization: `Bearer ${customToken || token}`, // support fresh token
         },
-        credentials: "include",
       });
 
       if (response.ok) {
@@ -54,7 +53,6 @@ export const AuthProvider = ({ children }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
       });
       if (response.ok) {
         const data = await response.json();
