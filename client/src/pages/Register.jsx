@@ -6,7 +6,6 @@ import { User, Mail, Phone, Lock } from "lucide-react";
 import {motion} from "framer-motion";
 export const Register = () => {
   const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
-  console.log("API URL: ", API);
   const [user, setUser] = useState({
     username: "",
     email: "",

@@ -32,7 +32,6 @@ export const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Contact User: ", contact);
 
     try {
       const response = await fetch(`${API}/api/form/contact`, {

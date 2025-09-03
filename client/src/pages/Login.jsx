@@ -53,7 +53,6 @@ export const Login = () => {
         toast.error("Invalid Credentials ❌");
       }
     } catch (error) {
-      console.log("LOGIN ERROR: ", error);
       toast.error("Something went wrong, try again!");
     }
   };

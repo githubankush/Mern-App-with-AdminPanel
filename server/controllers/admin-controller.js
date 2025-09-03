@@ -69,7 +69,6 @@ const createService = async (req,res,next)=>{
             return res.status(201).json({message:"Service created successfully", service: newService});
     }
     catch(err){
-        console.log("Create Service: ", err)
         next(err);
     }
     finally{

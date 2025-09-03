@@ -10,7 +10,7 @@ const services = async (req,res) =>{
         return;
     }
     catch(err){
-        console.log("Services: ", err)
+        res.status(500).json({message:"Internal Server Error"})
     }
 }
 module.exports = services

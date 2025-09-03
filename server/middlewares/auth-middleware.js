@@ -11,7 +11,6 @@ const authMiddleware = async (req, res, next) => {
 
     // Clean and verify the token
     const jwtToken = token.replace("Bearer", "").trim();
-    console.log("Token from auth middleware:", jwtToken);
     
     // Verify the token and extract user information
     const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY);

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export const AuthContext = createContext();
 
@@ -31,7 +32,6 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log("User Data: ", data.userData);
         setUser(data.userData);
         setAdmin(data.userData.isAdmin === true);
       } else {
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
         setAdmin(false);
       }
     } catch (error) {
-      console.log("Auth userAuthentication Error: ", error);
+      toast.error("Session expired. Please login again.");
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
         setService(data.msg);
       }
     } catch (err) {
-      console.log("Service Data Error: ", err);
+      toast.error("Failed to fetch services data.");
     }
   };
 

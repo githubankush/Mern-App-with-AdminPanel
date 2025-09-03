@@ -13,7 +13,6 @@ const validate = (schema) => {
           message
         };
   
-        console.log(error);
         res.status(status).json({ error: message }); // Send response directly with all error messages
         // next(error); // Optionally, pass it to next() if you have centralized error handling
       }

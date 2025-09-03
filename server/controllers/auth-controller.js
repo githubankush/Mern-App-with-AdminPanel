@@ -6,7 +6,7 @@ const home = async (req, res) => {
     try {
         res.status(200).send("Home Page"); 
     } catch (error) {
-        console.log(error);
+        res.status(500).send("Internal server error");
     }
 }
 
@@ -15,7 +15,6 @@ const home = async (req, res) => {
 const register = async (req, res) => {
     try {
         const { username, email, phone, password, isAdmin } = req.body;
-        console.log(req.body);
 
         const userExist = await userModel.findOne({ email });
         if (userExist) {
@@ -30,7 +29,6 @@ const register = async (req, res) => {
             userId: userCreated._id.toString(),
         });
     } catch (error) {
-        console.log("Error: ", error);
         return res.status(500).json({ message: "Internal server error" });
     }
 };
@@ -83,10 +81,9 @@ const login = async (req, res) => {
 const user = async (req, res) => {
     try {
        const userData = req.user;
-       console.log("User data: ",userData);
     res.status(200).json({userData});
     } catch (error) {
-        console.log("Error from the user route: ",error);
+        res.status(500).json({ message: "Internal server error" });
 }
 }
 

@@ -23,7 +23,6 @@ export const AdminServices = () => {
         },
       });
       const data = await response.json();
-      console.log("Data from Admin Services: ", data);
       setServices(data);
     } catch (err) {
       console.log("Error in Admin Services: ", err);
@@ -46,7 +45,6 @@ export const AdminServices = () => {
         body: JSON.stringify(newService),
       });
       const data = await response.json();
-      console.log("New Service Created: ", data);
 
       setShowForm(false); // hide form after submit
       setNewService({ service: "", description: "", price: "", provider: "", image: "" });
