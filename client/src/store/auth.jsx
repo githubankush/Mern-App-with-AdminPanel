@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
 
   const getServiceData = async () => {
     try {
-      const response = await fetch(`${API}/data/services`, {
+      const response = await fetch(`${API}/data/service`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
