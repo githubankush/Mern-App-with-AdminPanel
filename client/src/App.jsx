@@ -20,15 +20,16 @@ const App = ()=>{
     <BrowserRouter>
     <Navbar/>
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/about" element={<About/>}/>
-        <Route path="/contact" element={<Contact/>}/>
-        <Route path="/service" element={<Service/>}/>
-        <Route path="/logout" element={<Logout/>}/>
-        <Route path="/register" element={<Register/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="*" element={<Error/>}/>
-
+        <Route element={<UserLayout/>}>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/about" element={<About/>}/>
+          <Route path="/contact" element={<Contact/>}/>
+          <Route path="/service" element={<Service/>}/>
+          <Route path="/logout" element={<Logout/>}/>
+          <Route path="/register" element={<Register/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="*" element={<Error/>}/>
+        </Route>
         {/* for admin */}
         <Route path="/admin" element={<AdminLayout/>}>
           <Route path="home" element={<AdminHome/>}/>
