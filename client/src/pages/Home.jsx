@@ -1,8 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
+import BottomNav from "../components/BottomNav";
 
 export const Home = () => {
   return (
+    <>
     <section className="w-full min-h-[90vh] flex flex-col md:flex-row items-center justify-center px-2 md:px-12 lg:px-20 py-2 bg-gradient-to-r from-blue-50 via-white to-blue-100">
       
       {/* Left Section */}
@@ -62,5 +64,8 @@ export const Home = () => {
         />
       </motion.div>
     </section>
+    
+    <BottomNav />
+    </>
   );
 };
