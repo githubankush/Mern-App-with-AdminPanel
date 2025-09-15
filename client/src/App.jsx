@@ -14,6 +14,7 @@ import { AdminContacts } from "./pages/AdminContacts";
 import { AdminServices } from "./pages/AdminServices";
 import { AdminHome } from "./pages/AdminHome";
 import { Toaster } from "react-hot-toast";
+import { UserLayout } from "./components/Layouts/UserLayout";
 const App = ()=>{
  
   return <>
